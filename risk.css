@@ -1,0 +1,51 @@
+.riskanchor.level_0.list{
+    display: grid;
+}
+
+.riskanchor.level_1.title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.riskanchor.level_1.container{
+    background: #eee;
+    margin: 10px;
+    padding: 5px;
+}
+.riskanchor.level_1.list{
+    margin: 10px;
+}
+
+.riskanchor.level_2.title {
+    font-weight: bold;
+}
+
+.riskanchor.level_2.container{
+    float: left;
+}
+
+.riskanchor.level_3.container{
+    margin: 10px;
+    float: left;
+    background: #333;
+    width: 250px;
+    border-radius: 4px;
+    padding: 2px;
+}
+.riskanchor.level_3.title{
+    background: #333;
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+    font-size: smaller;
+    margin: 2px;
+}
+.riskanchor.item {
+    background: white;
+    padding: 2px;
+    font-size: smaller;
+}
+.riskanchor.item.selected {
+    background: #daa;
+}
+
