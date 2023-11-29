@@ -3,58 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <title>CVSS 3.1 Calculator</title>
-    <link rel="stylesheet" type="text/css" media="all" href="risk.css">
-    <script src="risk.js"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="calculator.css">
+    <script src="calculator.js"></script>
+    <script src="cvs31.js"></script>
   </head>
   <body>
-    <div id="riskanchor">
+    <div id="calculator">
     </div>
     <footer id="footer">
         Copyright 2023 © Magmax<br/>
         Based on <a href="https://github.com/cvssjs">CVSSjs</a> idea.
     </footer>
     <script>
-        var data = {
-            AV: {
-                l: "Attack Vector",
-                d: "",
-                o: {
-                    N: {
-                        l: "Network",
-                        v: 0.85
-                    },
-                    A: {
-                        l: "Adjacent",
-                        v: 0.62
-                    },
-                    L: {
-                        l: "Local",
-                        v: 0.55
-                    },
-                    P: {
-                        l: "Physical",
-                        v: 0.2
-                    }
-                }
-            },
-            AC: {
-                l: "Attack Complexity",
-                d: "",
-                o: {
-                    L: {
-                        l: "Low",
-                        v: 0.77,
-                    },
-                    H: {
-                        l: "High",
-                        v: 0.44,
-                    },
-                },
-            },
-        };
-        var risk = Risk("riskanchor", data);
+        var calculator = Calculator("calculator", cvs31Tree);
         if (window.location.hash.substring(1).length > 0) {
-            risk.set(decodeURIComponent(window.location.hash.substring(1)));
+            calculator.set(decodeURIComponent(window.location.hash.substring(1)));
         }
     </script>
   </body>
