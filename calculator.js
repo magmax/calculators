@@ -142,8 +142,8 @@ var Option = (name, level, label, value, id) => {
     };
 };
 
-var Vector = () => {
-    var root = Element("div", "vector");
+var Vector = (name) => {
+    var root = Element("div").setClass(name + " vector");
 
     var update = (str) => {
         root.setText(str);
@@ -157,7 +157,7 @@ var Vector = () => {
 
 var Calculator = (name, data, header) => {
     var root = document.getElementById(name);
-    var vector = Vector(header);
+    var vector = Vector(name, header);
     var metaFactorList = Container(name, 0, "", "");
     var nodes = []
 
@@ -196,12 +196,15 @@ var Calculator = (name, data, header) => {
                 }
                 pos ++;
             };
+            updateVector();
         };
         return container;
     };
 
     var updateVector = () => {
-        vector.update(getVector());
+        var v = getVector();
+        vector.update(v);
+        window.location.hash = v;
     };
 
     var getVector = () => {

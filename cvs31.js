@@ -85,12 +85,12 @@ var cvs31Tree = {
             l: "Scope",
             d: "",
             o: {
-              U: {
-                l: "Unchanged",
-                v: 0,
-              },
               C: {
                 l: "Changed",
+                v: 0,
+              },
+              U: {
+                l: "Unchanged",
                 v: 0,
               }
             },
@@ -105,54 +105,54 @@ var cvs31Tree = {
             l: "Confidentiality",
             d: "",
             o: {
-              N: {
-                l: "None",
-                v: 0.85,
+              H: {
+                l: "High",
+                v: 0.27,
               },
               L: {
                 l: "Low",
                 v: 0.62,
               },
-              H: {
-                l: "High",
-                v: 0.27,
-              },
+              N: {
+                l: "None",
+                v: 0.85,
+              }
             },
           },
           I: {
             l: "Integrity",
             d: "",
             o: {
-              N: {
-                l: "None",
-                v: 0.85,
+              H: {
+                l: "High",
+                v: 0.27,
               },
               L: {
                 l: "Low",
                 v: 0.62,
               },
-              H: {
-                l: "High",
-                v: 0.27,
-              },
+              N: {
+                l: "None",
+                v: 0.85,
+              }
             },
           },
           A: {
             l: "Availability",
             d: "",
             o: {
-              N: {
-                l: "None",
-                v: 0.85,
+              H: {
+                l: "High",
+                v: 0.27,
               },
               L: {
                 l: "Low",
                 v: 0.62,
               },
-              H: {
-                l: "High",
-                v: 0.27,
-              },
+              N: {
+                l: "None",
+                v: 0.85,
+              }
             },
           },
         },

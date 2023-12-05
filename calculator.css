@@ -12,6 +12,12 @@
     margin: 10px;
     padding: 5px;
 }
+.calculator.vector{
+    background: #eee;
+    margin: 10px;
+    padding: 5px;
+    font-family: monospace;
+}
 .calculator.level_1.list{
     margin: 10px;
 }
