@@ -45,7 +45,19 @@
     padding: 2px;
     font-size: smaller;
 }
-.calculator.item.selected {
-    background: #daa;
+.calculator.item.selected.best {
+    background: #FF6962;
+}
+.calculator.item.selected.good {
+    background: #FFB092;
+}
+.calculator.item.selected.medium{
+    background: #FFB346;
+}
+.calculator.item.selected.bad {
+    background: #FFD050;
+}
+.calculator.item.selected.worse {
+    background: #FFE08E;
 }
 

@@ -15,7 +15,7 @@
         Based on <a href="https://github.com/cvssjs">CVSSjs</a> idea.
     </footer>
     <script>
-        var calculator = Calculator("calculator", cvs31Tree);
+        var calculator = Calculator("calculator", cvs31Tree, "CVSS:3.1");
         if (window.location.hash.substring(1).length > 0) {
             calculator.set(decodeURIComponent(window.location.hash.substring(1)));
         }

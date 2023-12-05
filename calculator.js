@@ -66,20 +66,30 @@ var Container = (name, level, id, label, description, selection) => {
     var classNameLevel = " level_" + level;
     var classNameId = " id_" + id;
     var className = name + " " + classNameLevel + " " + classNameId;
+    var onclickActions = [];
+    var selected = null;
 
     var onclick = function(event) {
         select(event.target.id);
+        for (i in onclickActions) {
+            onclickActions[i]();
+        }
     };
 
-    var select = (id) => {
-        for (i in children) {
-            var item = children[i];
-            if (id == item.getId()) {
+    var select = (selectionId) => {
+        for (var i in children) {
+            item = children[i];
+            if (selectionId == item.getId()) {
+                selected = item;
                 item.select();
             } else {
                 item.unselect();
             };
         };
+    };
+
+    var addOnclickAction = (action) => {
+        onclickActions.push(action);
     };
 
     var render = (father) => {
@@ -88,8 +98,8 @@ var Container = (name, level, id, label, description, selection) => {
         var elTitle = Element("div").setFather(root).setText(label).setClass(effectiveClass + " title");
         var elList = Element("div").setFather(root).setClass(effectiveClass + " list");
 
-        for (id in children) {
-            var item = children[id].render(elList);
+        for (var i in children) {
+            var item = children[i].render(elList);
             if (selection) {
                 item.setClick(onclick);
             }
@@ -99,11 +109,14 @@ var Container = (name, level, id, label, description, selection) => {
 
     return {
         render: render,
+        getId: () => id,
+        getSelectedId: () => selected.getId(),
         append: (item) => children.push(item),
         select: select,
         addClassName: (newClassName) => className += " " + newClassName,
         getDepth: () => depth,
         setDepth: (n) => depth = Math.max(depth, n),
+        addOnclickAction: addOnclickAction,
     };
 };
 
@@ -111,24 +124,45 @@ var Option = (name, level, label, value, id) => {
     var classNameLevel = " level_" + level;
     var classNameId = " id_" + id;
     var className = name + " item " + classNameLevel + " " + classNameId;
+    var selected = false;
 
-    var root = Element("div", id).setAttribute("value", label).setText(label).setClass(className);
+    var root = Element("div", id).setAttribute("value", label).setText(label);
+    var update = () => {
+        root.setClass(className + (selected ? " selected" : ""));
+        return root;
+    };
 
     return {
-        render: (father) => root.setFather(father),
+        render: (father) => update().setFather(father),
         getValue: () => value,
         getId: () => id,
-        select: () => root.setClass(className + " selected"),
-        unselect: () => root.setClass(className),
+        select: () => {selected = true; update()},
+        unselect: () => {selected = false; update()},
+        addClassName: (newClassName) => className += " " + newClassName,
     };
 };
 
-var Calculator = (name, data) => {
+var Vector = () => {
+    var root = Element("div", "vector");
+
+    var update = (str) => {
+        root.setText(str);
+    }
+
+    return {
+        render: (father) => root.setFather(father),
+        update: update,
+    };
+};
+
+var Calculator = (name, data, header) => {
     var root = document.getElementById(name);
+    var vector = Vector(header);
     var metaFactorList = Container(name, 0, "", "");
     var nodes = []
 
     var init = () => {
+        vector.render(root);
         for (i in data) {
             var child = builder(data[i], i, 1);
             metaFactorList.append(child);
@@ -141,7 +175,7 @@ var Calculator = (name, data) => {
     var builder = (data, id, level) => {
         var container = Container(name, level, id, data.l, data.d, data.o != undefined);
         if (data.c != undefined) {
-            for (i in data.c) {
+            for (var i in data.c) {
                 var child = builder(data.c[i], i, level + 1);
                 container.append(child);
                 container.setDepth(child.getDepth() + 1);
@@ -149,25 +183,35 @@ var Calculator = (name, data) => {
         } else {
             container.addClassName("selector");
             container.setDepth(1);
-            var first = true;
-            for (i in data.o) {
+            container.addOnclickAction(updateVector);
+            nodes.push(container);
+            classNames = ["best", "good", "medium", "bad", "worse"]
+            var pos = 0;
+            for (var i in data.o) {
                 var option = Option(name, level, data.o[i].l, data.o[i].d, i);
-                nodes.push(option);
+                option.addClassName(classNames[Math.min(pos, classNames.length - 1)]);
                 container.append(option);
-                if (first) {
-                    first = false;
+                if (pos == 0) {
                     container.select(i);
-                };
+                }
+                pos ++;
             };
         };
         return container;
     };
 
+    var updateVector = () => {
+        vector.update(getVector());
+    };
 
     var getVector = () => {
-        for (node in nodes) {
+        var result = header;
+        for (var i in nodes) {
+            var node = nodes[i];
+            result += "/" + node.getId() + ":" + node.getSelectedId();
             console.log(node);
         };
+        return result;
     };
 
     var set = () => {

@@ -77,6 +77,26 @@ var cvs31Tree = {
           },
         },
       },
+      S: {
+        l: "Scope",
+        d: "",
+        c: {
+          S: {
+            l: "Scope",
+            d: "",
+            o: {
+              U: {
+                l: "Unchanged",
+                v: 0,
+              },
+              C: {
+                l: "Changed",
+                v: 0,
+              }
+            },
+          }
+        }
+      },
       I: {
         l: "Impact",
         d: "",
@@ -136,26 +156,6 @@ var cvs31Tree = {
             },
           },
         },
-      },
-      S: {
-        l: "Scope",
-        d: "",
-        c: {
-          S: {
-            l: "Scope",
-            d: "",
-            o: {
-              U: {
-                l: "Unchanged",
-                v: 0,
-              },
-              C: {
-                l: "Changed",
-                v: 0,
-              }
-            },
-          }
-        }
       },
     },
   },
