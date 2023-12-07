@@ -144,18 +144,26 @@ var Option = (name, level, label, value, id) => {
 
 var Vector = (name) => {
     var root = Element("div").setClass(name + " vector");
+    var score = Element("div").setClass(name + " score").setFather(root);
+    var chain = Element("div").setClass(name + " chain").setFather(root);
+    var value = null;
 
     var update = (str) => {
-        root.setText(str);
-    }
+        chain.setText(str);
+    };
+
+    var setValue = (n) => {
+        score.setText(n);
+    };
 
     return {
         render: (father) => root.setFather(father),
         update: update,
+        setValue: setValue,
     };
 };
 
-var Calculator = (name, data, header) => {
+var Calculator = (name, data, header, calc) => {
     var root = document.getElementById(name);
     var vector = Vector(name, header);
     var metaFactorList = Container(name, 0, "", "");
@@ -201,10 +209,23 @@ var Calculator = (name, data, header) => {
         return container;
     };
 
+    var nodesAsDict = () => {
+        result = []
+        for (var i in nodes) {
+            var node = nodes[i];
+            result[node.getId()] = node.getSelectedId();
+        };
+        return result;
+    };
+
     var updateVector = () => {
         var v = getVector();
         vector.update(v);
         window.location.hash = v;
+        if (calc != undefined) {
+            var n = calc(nodesAsDict());
+            vector.setValue(n);
+        }
     };
 
     var getVector = () => {
@@ -212,7 +233,6 @@ var Calculator = (name, data, header) => {
         for (var i in nodes) {
             var node = nodes[i];
             result += "/" + node.getId() + ":" + node.getSelectedId();
-            console.log(node);
         };
         return result;
     };
