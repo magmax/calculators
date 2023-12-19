@@ -56,6 +56,7 @@ var Element = (type, id) => {
         setLabel: setLabel,
         setOnchange: setOnchange,
         setClick: setClick,
+        setHref: (s) => {item.href = s; return me},
     };
     return me;
 };
@@ -144,16 +145,36 @@ var Option = (name, level, label, value, id) => {
 
 var Vector = (name) => {
     var root = Element("div").setClass(name + " vector");
-    var score = Element("div").setClass(name + " score").setFather(root);
-    var chain = Element("div").setClass(name + " chain").setFather(root);
+    var score = Element("span").setClass(name + " score").setFather(root);
+    var chain = Element("span").setClass(name + " chain").setFather(root).setText(" ");
+    var link = Element("a").setFather(chain);
     var value = null;
 
     var update = (str) => {
-        chain.setText(str);
+        window.location.hash = str;
+        link.setText(str);
+        link.setHref(window.location);
     };
 
     var setValue = (n) => {
-        score.setText(n);
+        var str = "";
+        if (n == "") {
+            n = 0;
+        }
+
+        if (n == 0) {
+            str = "NONE";
+        } else if (n < 4) {
+            str = "LOW";
+        } else if (n < 7) {
+            str = "MEDIUM";
+        } else if (n < 9) {
+            str = "HIGH";
+        } else {
+            str = "CRITICAL";
+        }
+        score.setText(n.toFixed(1) + " " + str);
+        score.setClass(name + " score " + str.toLowerCase());
     };
 
     return {
@@ -193,7 +214,7 @@ var Calculator = (name, data, header, calc) => {
             container.setDepth(1);
             container.addOnclickAction(updateVector);
             nodes.push(container);
-            classNames = ["best", "good", "medium", "bad", "worse"]
+            classNames = ["worse", "bad", "medium", "good", "best"]
             var pos = 0;
             for (var i in data.o) {
                 var option = Option(name, level, data.o[i].l, data.o[i].d, i);
@@ -221,7 +242,6 @@ var Calculator = (name, data, header, calc) => {
     var updateVector = () => {
         var v = getVector();
         vector.update(v);
-        window.location.hash = v;
         if (calc != undefined) {
             var n = calc(nodesAsDict());
             vector.setValue(n);

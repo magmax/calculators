@@ -51,19 +51,45 @@
     padding: 2px;
     font-size: smaller;
 }
-.calculator.item.selected.best {
+.calculator.item.selected.worse{
     background: #FF6962;
 }
-.calculator.item.selected.good {
+.calculator.item.selected.bad{
     background: #FFB092;
 }
 .calculator.item.selected.medium{
     background: #FFB346;
 }
-.calculator.item.selected.bad {
+.calculator.item.selected.good{
     background: #FFD050;
 }
-.calculator.item.selected.worse {
+.calculator.item.selected.best{
     background: #FFE08E;
 }
-
+.calculator.vector{
+    font-size: xx-large;
+    padding: 20px 10px 20px 10px;
+    margin: 10px;
+}
+.calculator.chain{
+    padding-left: 10px;
+    font-size: medium;
+}
+.calculator.score {
+    padding: 10px;
+}
+.calculator.score.none{
+    background: #7ac2f5;
+}
+.calculator.score.low{
+    background: #FFD050;
+}
+.calculator.score.medium{
+    background: #FFB346;
+}
+.calculator.score.high{
+    background: #FFB092;
+}
+.calculator.score.critical{
+    background: #FF6962;
+}
