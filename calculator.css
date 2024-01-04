@@ -93,3 +93,10 @@
 .calculator.score.critical{
     background: #FF6962;
 }
+.calculator.description{
+    background: #eee;
+    margin: 10px;
+    padding: 5px;
+}
+.calculator.description p{
+}

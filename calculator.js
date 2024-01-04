@@ -96,8 +96,12 @@ var Container = (name, level, id, label, description, selection) => {
     var render = (father) => {
         var effectiveClass = className + " depth_" + depth;
         var root = Element("div").setFather(father).setClass(effectiveClass + " container");
-        var elTitle = Element("div").setFather(root).setText(label).setClass(effectiveClass + " title");
+        var elLabel= Element("div").setFather(root).setText(label).setClass(effectiveClass + " title");
         var elList = Element("div").setFather(root).setClass(effectiveClass + " list");
+
+        if (description != undefined && description != "") {
+            elLabel.setAttribute("title", description);
+        }
 
         for (var i in children) {
             var item = children[i].render(elList);
@@ -111,7 +115,9 @@ var Container = (name, level, id, label, description, selection) => {
     return {
         render: render,
         getId: () => id,
+        getDescription: () => description,
         getSelectedId: () => selected.getId(),
+        getSelected: () => selected,
         append: (item) => children.push(item),
         select: select,
         addClassName: (newClassName) => className += " " + newClassName,
@@ -121,13 +127,18 @@ var Container = (name, level, id, label, description, selection) => {
     };
 };
 
-var Option = (name, level, label, value, id) => {
+var Option = (name, level, label, description, id) => {
     var classNameLevel = " level_" + level;
     var classNameId = " id_" + id;
     var className = name + " item " + classNameLevel + " " + classNameId;
     var selected = false;
 
     var root = Element("div", id).setAttribute("value", label).setText(label);
+
+    if (description != undefined && description != "") {
+        root.setAttribute("title", description);
+    }
+
     var update = () => {
         root.setClass(className + (selected ? " selected" : ""));
         return root;
@@ -135,8 +146,8 @@ var Option = (name, level, label, value, id) => {
 
     return {
         render: (father) => update().setFather(father),
-        getValue: () => value,
         getId: () => id,
+        getDescription: () => description,
         select: () => {selected = true; update()},
         unselect: () => {selected = false; update()},
         addClassName: (newClassName) => className += " " + newClassName,
@@ -184,20 +195,47 @@ var Vector = (name) => {
     };
 };
 
-var Calculator = (name, data, header, calc) => {
+var Description = (name) => {
+    var root = Element("div").setClass(name + " description");
+    var elTitle = Element("h2").setText("Score for Humans").setClass(name + " title").setFather(root).setAttribute("title", "This is the textual explanation of current vector. You can use to explain it to other teams or leads.");
+    var elText = Element("div").setClass(name + " text").setFather(root);
+
+    var update = (nodeList) => {
+        var text = "";
+        for (var i in nodeList) {
+            var d = nodeList[i].getSelected().getDescription();
+            if (d != undefined && d != "") {
+                text += "<p>" + d + "</p>";
+            };
+        }
+        elText.setText(text);
+    };
+
+    return {
+        render: (father) => root.setFather(father),
+        update: update,
+    };
+};
+
+var Calculator = (name, data, header, calc, options={}) => {
     var root = document.getElementById(name);
     var vector = Vector(name, header);
+    var description = Description(name);
     var metaFactorList = Container(name, 0, "", "");
     var nodes = []
 
     var init = () => {
-        vector.render(root);
         for (i in data) {
             var child = builder(data[i], i, 1);
             metaFactorList.append(child);
             metaFactorList.setDepth(child.getDepth() + 1);
         };
         metaFactorList.render(root);
+        vector.render(root);
+        if (options.description) {
+            description.render(root);
+        };
+        update();
     };
 
 
@@ -212,7 +250,7 @@ var Calculator = (name, data, header, calc) => {
         } else {
             container.addClassName("selector");
             container.setDepth(1);
-            container.addOnclickAction(updateVector);
+            container.addOnclickAction(update);
             nodes.push(container);
             classNames = ["worse", "bad", "medium", "good", "best"]
             var pos = 0;
@@ -225,7 +263,6 @@ var Calculator = (name, data, header, calc) => {
                 }
                 pos ++;
             };
-            updateVector();
         };
         return container;
     };
@@ -239,9 +276,10 @@ var Calculator = (name, data, header, calc) => {
         return result;
     };
 
-    var updateVector = () => {
+    var update = () => {
         var v = getVector();
         vector.update(v);
+        description.update(nodes);
         if (calc != undefined) {
             var n = calc(nodesAsDict());
             vector.setValue(n);

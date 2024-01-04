@@ -11,14 +11,14 @@
     <div id="calculator">
     </div>
     <footer id="footer">
-        Copyright 2023 © Magmax<br/>
+        Copyright 2024 © Magmax<br/>
         Based on <a href="https://github.com/cvssjs">CVSSjs</a> idea.
     </footer>
     <script>
-        var calculator = Calculator("calculator", cvs31Tree, "CVSS:3.1", calculate);
-        if (window.location.hash.substring(1).length > 0) {
-            calculator.set(decodeURIComponent(window.location.hash.substring(1)));
-        }
+      var calculator = Calculator("calculator", cvs31Tree, "CVSS:3.1", calculate, {description: true});
+      if (window.location.hash.substring(1).length > 0) {
+          calculator.set(decodeURIComponent(window.location.hash.substring(1)));
+      }
     </script>
   </body>
 </html>
