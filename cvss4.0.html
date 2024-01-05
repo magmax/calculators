@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html LANG="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CVSS 4.0 Calculator</title>
+    <link rel="stylesheet" type="text/css" media="all" href="calculator.css">
+    <script src="calculator.js"></script>
+    <script src="cvss4.0.js"></script>
+  </head>
+  <body>
+    <div id="calculator">
+    </div>
+    <footer id="footer">
+        Copyright 2024 © Magmax<br/>
+        Based on <a href="https://github.com/cvssjs">CVSSjs</a> idea.
+    </footer>
+    <script>
+      var calculator = Calculator("calculator", cvs40Tree, "CVSS:4.0", calculate, {description: true});
+      if (window.location.hash.substring(1).length > 0) {
+          calculator.set(decodeURIComponent(window.location.hash.substring(1)));
+      }
+    </script>
+  </body>
+</html>
