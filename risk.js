@@ -230,7 +230,8 @@ var riskTree = {
                 v: 7
               },
               A: {
-                "All data disclosed": 9
+                l: "All data disclosed",
+                v: 9
               }
             }
           },
@@ -398,4 +399,53 @@ var riskTree = {
       }
     }
   }
+};
+
+var calculate = (hash) => {
+  var calculateTree = (tree) => {
+    var result = 0;
+
+    for (var letter in tree.c) {
+      var node = tree.c[letter];
+      result += node.o[hash[letter]].v;
+    };
+
+    return result;
+  };
+
+  var numToVal = (n) => {
+    if (n < 3) {
+      return 1;
+    }
+    if (n < 6) {
+      return 2;
+    }
+    return 3;
+  };
+
+  var severities = ["Not enough information", "LOW", "MED", "HIGH", "CRITICAL"];
+
+  var taf = calculateTree(riskTree.L.c.TAF);
+  var vf = calculateTree(riskTree.L.c.VF);
+
+  var likelyhood = (taf + vf) / 8;
+  var technicalImpact = calculateTree(riskTree.I.c.TIF);
+  var businessImpact = calculateTree(riskTree.I.c.BIF);
+  var impact = (technicalImpact + businessImpact) / 8; // TODO: take into account "business impact information trust"
+
+  console.log("technical impact: " + technicalImpact);
+  console.log("business impact: " + businessImpact);
+  console.log("likelyhood: " + likelyhood + " (" + severities[numToVal(likelyhood)] + ")");
+  console.log("impact: " + impact + " (" + severities[numToVal(impact)] + ")");
+
+  var score = numToVal(likelyhood);
+  switch (numToVal(impact)) {
+    case 1: score -= 1; break;
+    case 2: break;
+    case 3: score += 1; break;
+  }
+
+  var result = [0, 3, 6, 8, 10][score];
+  console.log("Final score: " + score + "(" + severities[score] + ") --> " + result);
+  return result;
 };

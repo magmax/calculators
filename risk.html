@@ -15,7 +15,7 @@
         Based on <a href="https://github.com/cvssjs">CVSSjs</a> idea.
     </footer>
     <script>
-      var calculator= Calculator("calculator", riskTree, "RISK:0.1", null, {description: false});
+      var calculator= Calculator("calculator", riskTree, "RISK:0.1", calculate, {description: false});
         if (window.location.hash.substring(1).length > 0) {
             calculator.set(decodeURIComponent(window.location.hash.substring(1)));
         }
