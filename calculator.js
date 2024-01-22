@@ -235,6 +235,9 @@ var Calculator = (name, data, header, calc, options={}) => {
         if (options.description) {
             description.render(root);
         };
+        if (window.location.hash.substring(1).length > 0) {
+            set(decodeURIComponent(window.location.hash.substring(1)));
+        }
         update();
     };
 
@@ -295,7 +298,23 @@ var Calculator = (name, data, header, calc, options={}) => {
         return result;
     };
 
-    var set = () => {
+    var set = (hash) => {
+        var values = hash.split("/");
+        for (var i in values) {
+            var raw = values[i];
+            if (raw.indexOf(":") < 1) {
+                continue
+            }
+            var item = raw.split(":");
+            var k = item[0];
+            var v = item[1];
+            for (var j in nodes) {
+                var node = nodes[j];
+                if (node.getId() == k) {
+                    node.select(v);
+                }
+            }
+        }
     };
 
     init();
