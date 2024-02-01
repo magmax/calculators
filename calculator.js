@@ -226,7 +226,7 @@ var Calculator = (name, data, header, calc, options={}) => {
 
     var init = () => {
         for (i in data) {
-            var child = builder(data[i], i, 1);
+            var child = builder(data[i], i, 1, options.sort_desc);
             metaFactorList.append(child);
             metaFactorList.setDepth(child.getDepth() + 1);
         };
@@ -242,11 +242,11 @@ var Calculator = (name, data, header, calc, options={}) => {
     };
 
 
-    var builder = (data, id, level) => {
+    var builder = (data, id, level, sort_desc) => {
         var container = Container(name, level, id, data.l, data.d, data.o != undefined);
         if (data.c != undefined) {
             for (var i in data.c) {
-                var child = builder(data.c[i], i, level + 1);
+                var child = builder(data.c[i], i, level + 1, sort_desc);
                 container.append(child);
                 container.setDepth(child.getDepth() + 1);
             };
@@ -261,7 +261,7 @@ var Calculator = (name, data, header, calc, options={}) => {
                 var option = Option(name, level, data.o[i].l, data.o[i].d, i);
                 option.addClassName(classNames[Math.min(pos, classNames.length - 1)]);
                 container.append(option);
-                if (pos == 0) {
+                if (sort_desc || pos == 0) {
                     container.select(i);
                 }
                 pos ++;
